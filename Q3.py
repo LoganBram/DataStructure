@@ -49,8 +49,9 @@ class Bot:
                 pass
 
     """
-    Only runs once at beginning
+    Only runs once at beginning.
     """
+#
 
     def Start(self):
         Unfilt_List = []
