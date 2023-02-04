@@ -12,12 +12,11 @@ class LL:
         self.tail = None
 
     def FrontAdd(self, d):
+        new_node = Node(d)
         if self.head == None:
-            new_node = Node(d)
             self.head = new_node
             self.tail = new_node
         else:
-            new_node = Node(d)
             new_node.next = self.head
             self.head = new_node
 
@@ -27,23 +26,33 @@ class LL:
             self.head = new_node
             self.tail = new_node
         else:
-            n = self.head
-            while n.next != None:
-                n = n.next
-            n.next = new_node
+            self.tail.next = new_node
             self.tail = new_node
 
-    def Print(self):
-        n = self.head
-        while n != None:
-            print(n.data)
-            n = n.next
+    def FrontDelete(self):
+        if self.head is None:
+            pass
+        else:
+            self.head = self.head.next
 
-    def CompareLists(self, headB: 'LL'):
-        A = self.head
-        B = headB.head
-        A = A.next
-        B = B.next
+    def BackDelete(self):
+        if self.head is None:
+            pass
+        else:
+            n = self.head
+            while n.next != self.tail:
+                n = n.next
+            n.next = None
+            self.tail = n
+
+    def Print(self):
+        if self.head is None:
+            pass
+        else:
+            n = self.head
+            while n is not None:
+                print(n.data)
+                n = n.next
 
 
 # test cases
@@ -52,8 +61,12 @@ A = LL()
 A.FrontAdd(1)
 A.FrontAdd(2)
 A.FrontAdd(3)
-B.FrontAdd(1)
-B.FrontAdd(2)
-B.FrontAdd(4)
+B.BackAdd(1)
+B.BackAdd(2)
+B.BackAdd(4)
 
-A.CompareLists(B)
+A.BackDelete()
+B.BackDelete()
+
+A.Print()
+B.Print()
