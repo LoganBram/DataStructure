@@ -29,6 +29,12 @@ class LL:
             self.tail.next = new_node
             self.tail = new_node
 
+    def ReplaceAny(self, d, index):
+        n = self.head
+        for i in range(index):
+            n = n.next
+        n.data = d
+
     def FrontDelete(self):
         if self.head is None:
             pass
@@ -46,27 +52,9 @@ class LL:
             self.tail = n
 
     def Print(self):
-        if self.head is None:
-            pass
-        else:
-            n = self.head
-            while n is not None:
-                print(n.data)
-                n = n.next
-
-
-# test cases
-B = LL()
-A = LL()
-A.FrontAdd(1)
-A.FrontAdd(2)
-A.FrontAdd(3)
-B.BackAdd(1)
-B.BackAdd(2)
-B.BackAdd(4)
-
-A.BackDelete()
-B.BackDelete()
-
-A.Print()
-B.Print()
+        current = self.head
+        if self.head == None:
+            return
+        while current != None:
+            print(current.data)
+            current = current.next
