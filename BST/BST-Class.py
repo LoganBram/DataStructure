@@ -47,30 +47,34 @@ class BST(Node):
             self._print_inorder(node.right)
 
     def delete(self, value):
-        # start by searching for node
-        run = True
-        curr = self.root
-        while run == True:
-            if value == curr.val:
-                # deletion for no childs
-                if (curr.left and curr.right) == None:
-                    if parent.left == curr:
-                        parent.left = None
-                        run = False
-                    else:
-                        parent.right = None
-                        run = False
-                # deletion for one child
+        if self.root is None:
+            return self.root
+        else:
+            self._delete_helper(value, self.root)
 
-                # deletion for two children
-
-            elif value < curr.val:
-                parent = curr
-                curr = curr.left
+    def _delete_helper(self, value, current_node):
+        if current_node is None:
+            return current_node
+        elif value < current_node.val:
+            self._delete_helper(value, current_node.left)
+        elif value > current_node.val:
+            self._delete_helper(value, current_node.right)
+        else:
+            # Case 1: Node has no children
+            if current_node.left is None and current_node.right is None:
+                current_node = None
+            # Case 2: Node has one child
+            elif current_node.left is None:
+                current_node = current_node.right
+            elif current_node.right is None:
+                current_node = current_node.left
+            # Case 3: Node has two children
             else:
-                parent = curr
-                curr = curr.right
-        return "no"
+                temp = self._find_min_node(current_node.right)
+                current_node.val = temp.value
+                current_node.right = self._delete_helper(
+                    temp.value, current_node.right)
+        return current_node
 
 
 # create a new BST instance
