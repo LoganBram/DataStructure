@@ -50,15 +50,15 @@ class BST(Node):
         if self.root is None:
             return self.root
         else:
-            self._delete_helper(value, self.root)
+            self.root = self._delete_helper(value, self.root)
 
     def _delete_helper(self, value, current_node):
         if current_node is None:
             return current_node
         elif value < current_node.val:
-            self._delete_helper(value, current_node.left)
+            current_node.left = self._delete_helper(value, current_node.left)
         elif value > current_node.val:
-            self._delete_helper(value, current_node.right)
+            current_node.right = self._delete_helper(value, current_node.right)
         else:
             # Case 1: Node has no children
             if current_node.left is None and current_node.right is None:
