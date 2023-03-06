@@ -18,24 +18,14 @@ class BST(Node):
     def insert(self, key):
         self.root = self._insert(self.root, key)
 
-    def _insert(self, root, key):
-        if root is None:
+    def _insert(self, node, key):
+        if node is None:
             return Node(key)
-        elif key < root.val:
-            root.left = self._insert(root.left, key)
-        elif key > root.val:
-            root.right = self._insert(root.right, key)
-        return root
-
-    def get_total_height(self):
-        self._get_total_height(self.root)
-
-    def _get_total_height(self, node):
-        temp = None
-        queue = []
-        queue.append(node)
-        while len(queue) != 0:
-            temp = queue.pop(0)
+        elif key < node.val:
+            node.left = self._insert(node.left, key)
+        elif key > node.val:
+            node.right = self._insert(node.right, key)
+        return node
 
     def print_inorder(self):
         self._print_inorder(self.root)
@@ -52,32 +42,55 @@ class BST(Node):
         else:
             self.root = self._delete_helper(value, self.root)
 
-    def _delete_helper(self, value, current_node):
-        if current_node is None:
-            return current_node
-        elif value < current_node.val:
-            current_node.left = self._delete_helper(value, current_node.left)
-        elif value > current_node.val:
-            current_node.right = self._delete_helper(value, current_node.right)
+    def _delete_helper(self, value, curr):
+        if curr is None:
+            return curr
+        elif value > curr.val:
+            curr.right = self._delete_helper(value, curr.right)
+        elif value < curr.val:
+            curr.left = self._delete_helper(value, curr.left)
         else:
             # Case 1: Node has no children
-            if current_node.left is None and current_node.right is None:
-                current_node = None
+            if curr.left is None and curr.right is None:
+                curr = None
             # Case 2: Node has one child
-            elif current_node.left is None:
-                current_node = current_node.right
-            elif current_node.right is None:
-                current_node = current_node.left
+            elif curr.right is None:
+                curr = curr.left
+            elif curr.left is None:
+                curr = curr.right
             # Case 3: Node has two children
             else:
-                temp = self._find_min_node(current_node.right)
-                current_node.val = temp.value
-                current_node.right = self._delete_helper(
-                    temp.value, current_node.right)
-        return current_node
+                temp = self._find_min_node(curr.right)
+                curr.val = temp.val
+                curr.right = self._delete_helper(temp.val, curr.right)
+        return curr
+
+    def save(self):
+        list = self._savehelp(self.root, [])
+        # turns returned list into a string
+        seperate = ','
+        string = seperate.join(str(x) for x in list)
+        self.restore(string)
+
+    def _savehelp(self, curr, list):
+        if curr is None:
+            return curr
+
+        list.append(curr.val)
+        self._savehelp(curr.left, list)
+        self._savehelp(curr.right, list)
+        return list
+
+    def restore(self, input_string):
+        values = input_string.split(',')
+        for i in range(len(values)):
+            values[i] = int(values[i])
+        self.root = None
+        for value in values:
+            self.insert(value)
 
 
-# create a new BST instance
+        # create a new BST instance
 bst = BST()
 
 # insert some nodes
@@ -89,11 +102,21 @@ bst.insert(7)
 bst.insert(13)
 bst.insert(17)
 
-# get the total height of the tree
 bst.print_inorder()
-bst.delete(17)
+
+# get the total height of the tree
+# bst.print_inorder()
+# bst.delete(17)
+# print("")
+# bst.print_inorder()
+
+bst.save()
+
 print("")
 bst.print_inorder()
+print("")
+print(bst.get_total_height())
+
 
 """root.left = Node(2)
 root.right = Node(3)
