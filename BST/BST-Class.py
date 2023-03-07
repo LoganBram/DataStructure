@@ -25,29 +25,30 @@ class BST(Node):
             node.left = self._insert(node.left, key)
         elif key > node.val:
             node.right = self._insert(node.right, key)
+
         return node
 
-    def print_inorder(self):
-        self._print_inorder(self.root)
+    def inorder(self):
+        self.inorderhelp(self.root)
 
-    def _print_inorder(self, node):
+    def inorderhelp(self, node):
         # class slides helped with this as well sorta
         if node != None:
-            self._print_inorder(node.left)
+            self.inorderhelp(node.left)
             print(node.val)
-            self._print_inorder(node.right)
+            self.inorderhelp(node.right)
 
     def delete(self, target):
-        self.root = self._delete_helper(self.root, target)
+        self.root = self.delete_helper(self.root, target)
 
-    def _delete_helper(self, curr, target):
+    def delete_helper(self, curr, target):
         # iterate through BST
         if curr == None:
             return None
         if curr.val < target:
-            curr.right = self._delete_helper(curr.right, target)
+            curr.right = self.delete_helper(curr.right, target)
         elif curr.val > target:
-            curr.left = self._delete_helper(curr.left, target)
+            curr.left = self.delete_helper(curr.left, target)
         else:
             # value found
             # node has no children
@@ -63,14 +64,17 @@ class BST(Node):
                 temp = curr.right
                 while temp.left is not None:
                     temp = temp.left
-                # Replace value of current node with value of the min node
+                # replace value of current node with value of the min node
                 curr.val = temp.val
-                # Delete minimum node in the right subtree
-                curr.right = self._delete_helper(curr.right, temp.val)
+                # delete minimum node in the right subtree
+                curr.right = self.delete_helper(curr.right, temp.val)
+
         return curr
 
+    # incomplete total height obtain
+
     def _find_min_node(self, curr):
-        while curr.left is not None:
+        while curr.left != None:
             curr = curr.left
         return curr
 
@@ -114,21 +118,23 @@ bst.insert(3)
 bst.insert(7)
 bst.insert(13)
 
+# total_height = bst.get_total_height()
+# print(total_height)
 
 print("after insertion, printing in-order: ")
-bst.print_inorder()
+bst.inorder()
 
 print("tree after deleting two child (5): ")
 bst.delete(5)
-bst.print_inorder()
+bst.inorder()
 
 print("tree after deleting one child node(15): ")
 bst.delete(15)
-bst.print_inorder()
+bst.inorder()
 
 print("tree after deleting no child node (3):")
 bst.delete(3)
-bst.print_inorder()
+bst.inorder()
 
 print("tree after save and restoration, inserted more nodes, restore is ran within save: ")
 
@@ -136,6 +142,6 @@ bst.insert(5)
 bst.insert(12)
 bst.insert(8)
 bst.save()
-bst.print_inorder()
+bst.inorder()
 
 print(" ")
