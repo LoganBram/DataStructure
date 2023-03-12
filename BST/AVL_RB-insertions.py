@@ -83,9 +83,10 @@ class RB_Tree(RBNode):
     def __init__(self):
         self.root = None
 
-    def insert(self, tree, x):
-        tree.root = self._insert(tree.root, x)
-        tree.root.color = "B"
+    def insert(self, x):
+        self.root = self._insert(self.root, x)
+        self.root.color = "B"
+        print(self.root.val)
 
     def _insert(self, node, key):
         # insert recursively
@@ -110,7 +111,7 @@ class RB_Tree(RBNode):
                     return node
         elif key > node.val:
             # insert to right side
-            node.right = self.insert(node.right)
+            node.right = self._insert(node.right, key)
 
             # once done, check if parent on right side is black
             if node.right.color == "B":
@@ -214,3 +215,9 @@ class RB_Tree(RBNode):
 
             # return root
             return C
+
+
+q = RB_Tree()
+q.insert(1)
+q.insert(2)
+q.inert(3)
